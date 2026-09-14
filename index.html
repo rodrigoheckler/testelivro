@@ -192,6 +192,18 @@
   }
   .auth-toggle button:hover{ color: var(--brass); }
 
+  .auth-success{
+    font-family:-apple-system, sans-serif;
+    font-size:.82rem;
+    color:#2E5C3E;
+    background:#E4EFE6;
+    border:1px solid #B9D6BF;
+    border-radius:3px;
+    padding:10px 12px;
+    margin-top:10px;
+    display:none;
+  }
+
   .userbar{
     width:100%;
     max-width:680px;
@@ -547,9 +559,13 @@
   </div>
   <button class="primary" id="authSubmitBtn" style="width:100%;">Entrar</button>
   <div class="auth-toggle">
+    <button id="forgotPasswordBtn">Esqueci minha senha</button>
+  </div>
+  <div class="auth-toggle">
     <span id="authToggleText">Ainda não tem conta?</span>
     <button id="authToggleBtn">Criar conta</button>
   </div>
+  <div class="auth-success" id="authSuccessMsg"></div>
 </div>
 
 <div id="userbar" class="userbar" style="display:none;">
@@ -648,7 +664,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
   import {
     getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-    signOut, onAuthStateChanged
+    signOut, onAuthStateChanged, sendPasswordResetEmail
   } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
   import {
     getFirestore, doc, getDoc, setDoc, collection, addDoc, deleteDoc,
@@ -688,6 +704,8 @@
   const authSubmitBtn = document.getElementById('authSubmitBtn');
   const authToggleBtn = document.getElementById('authToggleBtn');
   const authToggleText = document.getElementById('authToggleText');
+  const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
+  const authSuccessMsg = document.getElementById('authSuccessMsg');
 
   const userbar = document.getElementById('userbar');
   const userEmailLabel = document.getElementById('userEmailLabel');
@@ -787,6 +805,23 @@
   }
 
   logoutBtn.addEventListener('click', () => signOut(auth));
+
+  forgotPasswordBtn.addEventListener('click', async () => {
+    const email = authEmail.value.trim();
+    authSuccessMsg.style.display = 'none';
+    if (!email) {
+      showError('Digite seu e-mail no campo acima e clique em "Esqueci minha senha" de novo.');
+      return;
+    }
+    clearError();
+    try {
+      await sendPasswordResetEmail(auth, email);
+      authSuccessMsg.textContent = 'Enviamos um e-mail para ' + email + ' com um link para redefinir sua senha. Verifique também a caixa de spam.';
+      authSuccessMsg.style.display = 'block';
+    } catch (err) {
+      showError(traduzErroFirebase(err.code) || err.message);
+    }
+  });
 
   subscribeBtn.addEventListener('click', async () => {
     clearError();
