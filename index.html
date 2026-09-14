@@ -688,7 +688,7 @@
   const firebaseApp = initializeApp(firebaseConfig);
   const auth = getAuth(firebaseApp);
   const db = getFirestore(firebaseApp);
-  const functions = getFunctions(firebaseApp, "southamerica-east1");
+  const functions = getFunctions(firebaseApp, "us-central1");
   const gerarHistoriaFn = httpsCallable(functions, "gerarHistoria");
   const criarAssinaturaFn = httpsCallable(functions, "criarAssinatura");
   const entrevistarMemoriaFn = httpsCallable(functions, "entrevistarMemoria");
