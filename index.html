@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memórias → Histórias</title>
+<style>
+  :root{
+    --bg: #10201A;
+    --bg-2: #16281F;
+    --paper: #F3ECDA;
+    --paper-2: #EAE1C9;
+    --ink: #2A2018;
+    --ink-soft: #5A5142;
+    --brass: #C9A227;
+    --brass-soft: #8F7A2E;
+    --rec: #B3452D;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 20% -10%, #1E3A2A 0%, transparent 45%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+    color:var(--paper);
+    font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:32px 18px 60px;
+  }
+  header{
+    text-align:center;
+    margin-bottom:30px;
+  }
+  .eyebrow{
+    font-family: 'Courier New', monospace;
+    letter-spacing:.25em;
+    font-size:11px;
+    color:var(--brass);
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  h1{
+    font-size:2.4rem;
+    margin:0;
+    font-weight:400;
+    letter-spacing:.01em;
+  }
+  h1 em{
+    font-style:italic;
+    color:var(--brass);
+  }
+  .subtitle{
+    color:#B7C4BA;
+    font-size:.95rem;
+    margin-top:10px;
+    max-width:520px;
+    font-family: -apple-system, sans-serif;
+  }
+
+  .step-label{
+    width:100%;
+    max-width:680px;
+    font-family:'Courier New', monospace;
+    font-size:11px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--brass);
+    margin: 28px 0 10px 4px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .step-label::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background: linear-gradient(90deg, var(--brass-soft), transparent);
+  }
+
+  .key-panel{
+    width:100%;
+    max-width:680px;
+    background: rgba(243,236,218,0.06);
+    border:1px solid var(--brass-soft);
+    border-radius:4px;
+    padding:16px 18px;
+    margin-bottom:6px;
+  }
+  .key-panel label{
+    display:block;
+    font-family:'Courier New', monospace;
+    font-size:11px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--brass);
+    margin-bottom:8px;
+  }
+  .key-row{
+    display:flex;
+    gap:8px;
+  }
+  .key-row input{
+    flex:1;
+    background: var(--paper);
+    color: var(--ink);
+    border:none;
+    border-radius:3px;
+    padding:10px 12px;
+    font-family: -apple-system, sans-serif;
+    font-size:.9rem;
+    outline:none;
+  }
+  .key-row button{
+    background:transparent;
+    border:1px solid var(--brass-soft);
+    color:var(--brass);
+    padding:0 16px;
+    border-radius:3px;
+    font-family:-apple-system, sans-serif;
+    font-size:.85rem;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .key-row button:hover{ border-color:var(--brass); }
+  .key-note{
+    font-family:-apple-system, sans-serif;
+    font-size:.78rem;
+    color:#B7C4BA;
+    margin-top:8px;
+    line-height:1.5;
+  }
+  .key-status{
+    font-family:-apple-system, sans-serif;
+    font-size:.78rem;
+    margin-top:6px;
+    color: var(--brass);
+  }
+
+  .auth-panel{
+    width:100%;
+    max-width:680px;
+    background: var(--paper);
+    color: var(--ink);
+    border-radius:4px;
+    box-shadow: 0 18px 40px rgba(0,0,0,.35);
+    padding:24px 26px;
+    margin-bottom:20px;
+  }
+  .auth-panel h2{
+    font-size:1.3rem;
+    font-weight:400;
+    margin:0 0 14px;
+  }
+  .auth-field{ margin-bottom:12px; }
+  .auth-field label{
+    display:block;
+    font-family:'Courier New', monospace;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+  .auth-field input{
+    width:100%;
+    border:1px solid #DCD2B4;
+    border-radius:3px;
+    padding:10px 12px;
+    font-family:-apple-system, sans-serif;
+    font-size:.92rem;
+    color:var(--ink);
+    outline:none;
+  }
+  .auth-field input:focus{ border-color: var(--brass-soft); }
+  .auth-toggle{
+    font-family:-apple-system, sans-serif;
+    font-size:.82rem;
+    color:var(--ink-soft);
+    margin-top:10px;
+  }
+  .auth-toggle button{
+    background:none;
+    border:none;
+    color: var(--brass-soft);
+    text-decoration:underline;
+    cursor:pointer;
+    font-size:.82rem;
+    padding:0;
+  }
+  .auth-toggle button:hover{ color: var(--brass); }
+
+  .userbar{
+    width:100%;
+    max-width:680px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    background: rgba(243,236,218,0.06);
+    border:1px solid var(--brass-soft);
+    border-radius:4px;
+    padding:12px 18px;
+    margin-bottom:8px;
+    font-family:-apple-system, sans-serif;
+    font-size:.85rem;
+    flex-wrap:wrap;
+  }
+  .userbar-info{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .plan-badge{
+    font-family:'Courier New', monospace;
+    font-size:10px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    background: var(--brass);
+    color:#1B140C;
+    padding:3px 8px;
+    border-radius:2px;
+  }
+  .userbar button{
+    background:transparent;
+    border:1px solid var(--brass-soft);
+    color:var(--brass);
+    padding:6px 14px;
+    border-radius:3px;
+    font-family:-apple-system, sans-serif;
+    font-size:.8rem;
+    cursor:pointer;
+  }
+  .userbar button:hover{ border-color:var(--brass); }
+
+  .quota-note{
+    font-family:-apple-system, sans-serif;
+    font-size:.8rem;
+    color:#B7C4BA;
+    text-align:center;
+    margin: -6px 0 6px;
+  }
+
+  .app-locked{
+    display:none;
+  }
+
+  .struct-panel{
+    width:100%;
+    max-width:680px;
+    background: var(--paper);
+    color:var(--ink);
+    border-radius:4px;
+    box-shadow: 0 18px 40px rgba(0,0,0,.35);
+    padding:8px 8px;
+    margin-bottom:8px;
+    position:relative;
+    overflow:hidden;
+  }
+  .struct-panel::before{
+    content:"";
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width:6px;
+    background: linear-gradient(180deg, var(--brass), var(--brass-soft));
+  }
+  .field-block{
+    padding:16px 18px 16px 20px;
+  }
+  .field-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:8px;
+  }
+  .field-label{
+    font-family:'Courier New', monospace;
+    font-size:11px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .field-mic{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    border:1.5px solid var(--brass-soft);
+    background:transparent;
+    color:var(--brass-soft);
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    transition: all .2s ease;
+    position:relative;
+  }
+  .field-mic svg{ width:14px; height:14px; }
+  .field-mic:hover{ border-color:var(--brass); color:var(--brass); }
+  .field-mic.recording{
+    border-color:var(--rec);
+    background:var(--rec);
+    color:#fff;
+    animation: pulseSmall 1.4s infinite;
+  }
+  @keyframes pulseSmall{
+    0%{ box-shadow: 0 0 0 0 rgba(179,69,45,.5); }
+    70%{ box-shadow: 0 0 0 10px rgba(179,69,45,0); }
+    100%{ box-shadow: 0 0 0 0 rgba(179,69,45,0); }
+  }
+
+  input[type="text"], input[type="password"], textarea{
+    width:100%;
+    border:none;
+    background:transparent;
+    resize:vertical;
+    font-family:Georgia, serif;
+    font-size:1.02rem;
+    line-height:1.55;
+    color:var(--ink);
+    outline:none;
+  }
+  input[type="text"]{ font-size:1.15rem; }
+  .field-block textarea{ min-height:110px; }
+  input::placeholder, textarea::placeholder{ color:#9A8F78; }
+
+  .actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin: 20px 0 8px;
+  }
+  button.primary{
+    background: var(--brass);
+    color:#1B140C;
+    border:none;
+    padding:13px 26px;
+    border-radius:3px;
+    font-family:-apple-system, sans-serif;
+    font-weight:600;
+    font-size:.95rem;
+    cursor:pointer;
+    letter-spacing:.02em;
+    transition: background .2s ease, transform .15s ease;
+  }
+  button.primary:hover{ background:#E0B94A; transform:translateY(-1px); }
+  button.primary:disabled{ background:#5A5142; color:#8f8a7c; cursor:not-allowed; transform:none; }
+
+  button.ghost{
+    background:transparent;
+    border:1px solid var(--brass-soft);
+    color:var(--brass);
+    padding:12px 20px;
+    border-radius:3px;
+    font-family:-apple-system, sans-serif;
+    font-size:.9rem;
+    cursor:pointer;
+  }
+  button.ghost:hover{ border-color:var(--brass); }
+
+  .memories-wrap{
+    width:100%;
+    max-width:680px;
+  }
+  .memory-count{
+    font-family:-apple-system, sans-serif;
+    font-size:.8rem;
+    color:#B7C4BA;
+    margin-bottom:12px;
+    text-align:center;
+  }
+  .memory-card{
+    background: var(--paper);
+    color: var(--ink);
+    border-radius:4px;
+    box-shadow: 0 10px 24px rgba(0,0,0,.28);
+    padding:16px 18px;
+    margin-bottom:12px;
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    position:relative;
+  }
+  .memory-check{
+    margin-top:4px;
+    width:18px;
+    height:18px;
+    accent-color: var(--brass-soft);
+    flex-shrink:0;
+    cursor:pointer;
+  }
+  .memory-body{ flex:1; min-width:0; }
+  .memory-title{
+    font-weight:700;
+    font-size:1.02rem;
+    margin-bottom:4px;
+  }
+  .memory-date{
+    font-family:'Courier New', monospace;
+    font-size:10px;
+    color:var(--ink-soft);
+    letter-spacing:.06em;
+    margin-bottom:8px;
+    text-transform:uppercase;
+  }
+  .memory-text{
+    font-size:.96rem;
+    line-height:1.55;
+    white-space:pre-wrap;
+  }
+  .memory-delete{
+    background:transparent;
+    border:none;
+    color:var(--ink-soft);
+    cursor:pointer;
+    font-family:-apple-system, sans-serif;
+    font-size:.78rem;
+    text-decoration:underline;
+    padding:0;
+    flex-shrink:0;
+    align-self:flex-start;
+    margin-top:4px;
+  }
+  .memory-delete:hover{ color:var(--rec); }
+
+  .empty-state{
+    font-family:-apple-system, sans-serif;
+    color:#B7C4BA;
+    font-size:.85rem;
+    text-align:center;
+    padding:24px 10px;
+    font-style:italic;
+  }
+
+  .chat-bubble{
+    max-width:88%;
+    padding:10px 14px;
+    border-radius:10px;
+    font-size:.94rem;
+    line-height:1.5;
+    white-space:pre-wrap;
+  }
+  .chat-bubble.ai{
+    align-self:flex-start;
+    background:#EAE1C9;
+    color:var(--ink);
+    border:1px solid #DCD2B4;
+  }
+  .chat-bubble.ai::before{
+    content:"Pergunta da IA";
+    display:block;
+    font-family:'Courier New', monospace;
+    font-size:9px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--brass-soft);
+    margin-bottom:4px;
+  }
+  .chat-bubble.user{
+    align-self:flex-end;
+    background: var(--brass);
+    color:#1B140C;
+  }
+
+  .panel{
+    width:100%;
+    max-width:680px;
+    background: var(--paper);
+    color:var(--ink);
+    border-radius:4px;
+    box-shadow: 0 18px 40px rgba(0,0,0,.35);
+    padding:26px 26px 22px;
+    margin-bottom:20px;
+    position:relative;
+  }
+  .panel::before{
+    content:"";
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width:6px;
+    background: linear-gradient(180deg, var(--brass), var(--brass-soft));
+    border-radius:4px 0 0 4px;
+  }
+  .panel-label{
+    font-family:'Courier New', monospace;
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:12px;
+  }
+
+  .story-output{
+    white-space:pre-wrap;
+    font-size:1.08rem;
+    line-height:1.75;
+  }
+  .story-output:empty::before{
+    content:"A história tecida a partir das memórias selecionadas aparecerá aqui.";
+    color:#9A8F78;
+    font-style:italic;
+  }
+
+  .error{
+    max-width:680px;
+    width:100%;
+    background:#3A1E18;
+    border:1px solid var(--rec);
+    color:#F0C9BC;
+    padding:14px 18px;
+    border-radius:4px;
+    font-family:-apple-system, sans-serif;
+    font-size:.88rem;
+    margin-bottom:20px;
+  }
+
+  .loading-dots::after{
+    content:'...';
+    animation: dots 1.2s steps(4, end) infinite;
+  }
+  @keyframes dots{
+    0%,20%{ content:''; }
+    40%{ content:'.'; }
+    60%{ content:'..'; }
+    80%,100%{ content:'...'; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Registro &amp; Narrativa</div>
+  <h1>Memórias <em>→</em> Histórias</h1>
+  <div class="subtitle">Guarde memórias soltas — por voz ou por escrito. Quando quiser, selecione algumas e deixe a IA tecer uma história a partir delas.</div>
+</header>
+
+<div id="errorBox" class="error" style="display:none;"></div>
+
+<div id="authPanel" class="auth-panel">
+  <h2 id="authTitle">Entrar na sua coleção</h2>
+  <div class="auth-field">
+    <label for="authEmail">E-mail</label>
+    <input type="text" id="authEmail" placeholder="seu@email.com" autocomplete="email">
+  </div>
+  <div class="auth-field">
+    <label for="authSenha">Senha</label>
+    <input type="password" id="authSenha" placeholder="mínimo 6 caracteres" autocomplete="current-password">
+  </div>
+  <button class="primary" id="authSubmitBtn" style="width:100%;">Entrar</button>
+  <div class="auth-toggle">
+    <span id="authToggleText">Ainda não tem conta?</span>
+    <button id="authToggleBtn">Criar conta</button>
+  </div>
+</div>
+
+<div id="userbar" class="userbar" style="display:none;">
+  <div class="userbar-info">
+    <span id="userEmailLabel"></span>
+    <span class="plan-badge" id="planBadge">GRÁTIS</span>
+  </div>
+  <div style="display:flex; gap:8px;">
+    <button id="subscribeBtn" style="display:none;">Assinar — R$ 24,90/mês</button>
+    <button id="logoutBtn">Sair</button>
+  </div>
+</div>
+
+<div id="appLocked" class="app-locked">
+
+<div class="step-label">1 · Guardar uma memória</div>
+<div class="struct-panel">
+  <div class="field-block">
+    <div class="field-head">
+      <span class="field-label">Título curto (opcional)</span>
+    </div>
+    <input type="text" id="memTitulo" placeholder="Ex.: A colheita de 1998">
+  </div>
+  <div class="field-block">
+    <div class="field-head">
+      <span class="field-label">O que você lembra</span>
+      <button class="field-mic" id="memMicBtn" aria-label="Gravar memória por voz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+          <line x1="12" y1="19" x2="12" y2="23"></line>
+        </svg>
+      </button>
+    </div>
+    <textarea id="memTexto" placeholder="Fale ou digite livremente. Não precisa estar organizado — pode ser um trecho solto, uma sensação, um detalhe."></textarea>
+  </div>
+</div>
+<div class="actions">
+  <button class="primary" id="saveMemBtn">Salvar memória</button>
+</div>
+<div class="quota-note" id="quotaNote"></div>
+
+<div class="step-label">2 · Memórias guardadas</div>
+<div class="memories-wrap">
+  <div class="memory-count" id="memoryCount"></div>
+  <div id="memoriesList"></div>
+</div>
+
+<div class="step-label" id="entrevistaStepLabel" style="display:none;">Entrevista guiada (assinantes)</div>
+<div class="struct-panel" id="entrevistaPanel" style="display:none;">
+  <div class="field-block">
+    <div id="entrevistaChat" style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;"></div>
+    <div class="field-head">
+      <span class="field-label" id="entrevistaLabel">Sobre o que você quer falar?</span>
+      <button class="field-mic" id="entrevistaMicBtn" aria-label="Gravar resposta por voz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+          <line x1="12" y1="19" x2="12" y2="23"></line>
+        </svg>
+      </button>
+    </div>
+    <textarea id="entrevistaInput" placeholder="Comece contando algo. A IA vai fazer perguntas pra te ajudar a lembrar mais detalhes."></textarea>
+  </div>
+</div>
+<div class="actions" id="entrevistaActions" style="display:none;">
+  <button class="primary" id="entrevistaEnviarBtn">Enviar resposta</button>
+  <button class="ghost" id="entrevistaFinalizarBtn" style="display:none;">Finalizar e salvar como memória</button>
+</div>
+
+<div class="step-label">3 · Criar história</div>
+<div class="actions">
+  <button class="primary" id="weaveBtn">Transformar selecionadas em história</button>
+  <button class="ghost" id="selectAllBtn">Selecionar todas</button>
+</div>
+
+<div class="panel" id="storyPanel" style="display:none;">
+  <div class="panel-label">História gerada</div>
+  <div class="story-output" id="storyOutput"></div>
+  <div class="actions" style="margin-top:16px;">
+    <button class="ghost" id="copyBtn">Copiar texto</button>
+  </div>
+</div>
+
+<div class="step-label" id="pdfStepLabel" style="display:none;">4 · Exportar</div>
+<div class="actions" id="pdfActions" style="display:none;">
+  <button class="primary" id="exportPdfBtn">Exportar memórias em PDF</button>
+</div>
+
+</div>
+<!-- fecha #appLocked -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script type="module">
+  // ---------- Firebase ----------
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import {
+    getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+    signOut, onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+  import {
+    getFirestore, doc, getDoc, setDoc, collection, addDoc, deleteDoc,
+    query, where, orderBy, onSnapshot, serverTimestamp, Timestamp
+  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+  import {
+    getFunctions, httpsCallable
+  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-functions.js";
+
+  // TODO: cole aqui a configuração do seu projeto Firebase
+  // (Project settings > Your apps > SDK setup and configuration)
+  const firebaseConfig = {
+    apiKey: "AIzaSyAHimswEzijsqfmZ8GKOruG123sOqgLAu8",
+    authDomain: "colecao-de-memorias.firebaseapp.com",
+    projectId: "colecao-de-memorias",
+    storageBucket: "colecao-de-memorias.firebasestorage.app",
+    messagingSenderId: "1098897727124",
+    appId: "1:1098897727124:web:bc2b6abd1f476c5e4e9e81"
+  };
+
+  const firebaseApp = initializeApp(firebaseConfig);
+  const auth = getAuth(firebaseApp);
+  const db = getFirestore(firebaseApp);
+  const functions = getFunctions(firebaseApp, "southamerica-east1");
+  const gerarHistoriaFn = httpsCallable(functions, "gerarHistoria");
+  const criarAssinaturaFn = httpsCallable(functions, "criarAssinatura");
+  const entrevistarMemoriaFn = httpsCallable(functions, "entrevistarMemoria");
+
+  const LIMITE_DIARIO_GRATIS = 5;
+
+  const errorBox = document.getElementById('errorBox');
+
+  const authPanel = document.getElementById('authPanel');
+  const authTitle = document.getElementById('authTitle');
+  const authEmail = document.getElementById('authEmail');
+  const authSenha = document.getElementById('authSenha');
+  const authSubmitBtn = document.getElementById('authSubmitBtn');
+  const authToggleBtn = document.getElementById('authToggleBtn');
+  const authToggleText = document.getElementById('authToggleText');
+
+  const userbar = document.getElementById('userbar');
+  const userEmailLabel = document.getElementById('userEmailLabel');
+  const planBadge = document.getElementById('planBadge');
+  const subscribeBtn = document.getElementById('subscribeBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  const appLocked = document.getElementById('appLocked');
+  const quotaNote = document.getElementById('quotaNote');
+
+  const memTitulo = document.getElementById('memTitulo');
+  const memTexto = document.getElementById('memTexto');
+  const memMicBtn = document.getElementById('memMicBtn');
+  const saveMemBtn = document.getElementById('saveMemBtn');
+
+  const memoriesList = document.getElementById('memoriesList');
+  const memoryCount = document.getElementById('memoryCount');
+  const weaveBtn = document.getElementById('weaveBtn');
+  const selectAllBtn = document.getElementById('selectAllBtn');
+
+  const storyPanel = document.getElementById('storyPanel');
+  const storyOutput = document.getElementById('storyOutput');
+  const copyBtn = document.getElementById('copyBtn');
+
+  const pdfStepLabel = document.getElementById('pdfStepLabel');
+  const pdfActions = document.getElementById('pdfActions');
+  const exportPdfBtn = document.getElementById('exportPdfBtn');
+
+  const entrevistaStepLabel = document.getElementById('entrevistaStepLabel');
+  const entrevistaPanel = document.getElementById('entrevistaPanel');
+  const entrevistaActions = document.getElementById('entrevistaActions');
+  const entrevistaChat = document.getElementById('entrevistaChat');
+  const entrevistaInput = document.getElementById('entrevistaInput');
+  const entrevistaMicBtn = document.getElementById('entrevistaMicBtn');
+  const entrevistaEnviarBtn = document.getElementById('entrevistaEnviarBtn');
+  const entrevistaFinalizarBtn = document.getElementById('entrevistaFinalizarBtn');
+  const entrevistaLabel = document.getElementById('entrevistaLabel');
+
+  function showError(msg){
+    errorBox.textContent = msg;
+    errorBox.style.display = 'block';
+    errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  function clearError(){
+    errorBox.style.display = 'none';
+  }
+
+  // ---------- Autenticação ----------
+  let modoCadastro = false;
+  authToggleBtn.addEventListener('click', () => {
+    modoCadastro = !modoCadastro;
+    authTitle.textContent = modoCadastro ? 'Criar sua conta' : 'Entrar na sua coleção';
+    authSubmitBtn.textContent = modoCadastro ? 'Criar conta' : 'Entrar';
+    authToggleText.textContent = modoCadastro ? 'Já tem conta?' : 'Ainda não tem conta?';
+    authToggleBtn.textContent = modoCadastro ? 'Entrar' : 'Criar conta';
+    clearError();
+  });
+
+  authSubmitBtn.addEventListener('click', async () => {
+    const email = authEmail.value.trim();
+    const senha = authSenha.value;
+    if (!email || !senha) {
+      showError('Preencha e-mail e senha.');
+      return;
+    }
+    clearError();
+    authSubmitBtn.disabled = true;
+    try {
+      if (modoCadastro) {
+        const cred = await createUserWithEmailAndPassword(auth, email, senha);
+        await setDoc(doc(db, 'users', cred.user.uid), {
+          email: email,
+          plano: 'gratis',
+          criadoEm: serverTimestamp()
+        });
+      } else {
+        await signInWithEmailAndPassword(auth, email, senha);
+      }
+    } catch (err) {
+      showError(traduzErroFirebase(err.code) || err.message);
+    } finally {
+      authSubmitBtn.disabled = false;
+    }
+  });
+
+  function traduzErroFirebase(code){
+    const mapa = {
+      'auth/email-already-in-use': 'Este e-mail já tem uma conta. Tente entrar em vez de criar uma nova.',
+      'auth/invalid-email': 'E-mail inválido.',
+      'auth/weak-password': 'A senha precisa ter pelo menos 6 caracteres.',
+      'auth/user-not-found': 'Não encontramos conta com este e-mail.',
+      'auth/wrong-password': 'Senha incorreta.',
+      'auth/invalid-credential': 'E-mail ou senha incorretos.',
+      'auth/too-many-requests': 'Muitas tentativas. Aguarde um pouco e tente de novo.'
+    };
+    return mapa[code];
+  }
+
+  logoutBtn.addEventListener('click', () => signOut(auth));
+
+  subscribeBtn.addEventListener('click', async () => {
+    clearError();
+    subscribeBtn.disabled = true;
+    subscribeBtn.textContent = 'Abrindo pagamento...';
+    try {
+      const resultado = await criarAssinaturaFn({ backUrl: window.location.href });
+      window.location.href = resultado.data.checkoutUrl;
+    } catch (err) {
+      showError('Não foi possível iniciar a assinatura: ' + err.message);
+      subscribeBtn.disabled = false;
+      subscribeBtn.textContent = 'Assinar — R$ 24,90/mês';
+    }
+  });
+
+  let currentUid = null;
+  let currentPlano = 'gratis';
+  let unsubscribeMemories = null;
+
+  onAuthStateChanged(auth, async (user) => {
+    if (unsubscribeMemories) { unsubscribeMemories(); unsubscribeMemories = null; }
+
+    if (user) {
+      currentUid = user.uid;
+      authPanel.style.display = 'none';
+      userbar.style.display = 'flex';
+      appLocked.style.display = 'block';
+      userEmailLabel.textContent = user.email;
+
+      const userDocRef = doc(db, 'users', user.uid);
+      const userSnap = await getDoc(userDocRef);
+      if (userSnap.exists()) {
+        currentPlano = userSnap.data().plano || 'gratis';
+      } else {
+        await setDoc(userDocRef, { email: user.email, plano: 'gratis', criadoEm: serverTimestamp() });
+        currentPlano = 'gratis';
+      }
+      planBadge.textContent = currentPlano === 'assinante' ? 'ASSINANTE' : 'GRÁTIS';
+      subscribeBtn.style.display = currentPlano === 'assinante' ? 'none' : 'inline-block';
+      pdfStepLabel.style.display = currentPlano === 'assinante' ? 'flex' : 'none';
+      pdfActions.style.display = currentPlano === 'assinante' ? 'flex' : 'none';
+      entrevistaStepLabel.style.display = currentPlano === 'assinante' ? 'flex' : 'none';
+      entrevistaPanel.style.display = currentPlano === 'assinante' ? 'block' : 'none';
+      entrevistaActions.style.display = currentPlano === 'assinante' ? 'flex' : 'none';
+
+      watchMemories();
+    } else {
+      currentUid = null;
+      authPanel.style.display = 'block';
+      userbar.style.display = 'none';
+      appLocked.style.display = 'none';
+      memoriesList.innerHTML = '';
+    }
+  });
+
+  // ---------- Memórias (Firestore) ----------
+  function memoriesCollection(){
+    return collection(db, 'users', currentUid, 'memorias');
+  }
+
+  function watchMemories(){
+    const q = query(memoriesCollection(), orderBy('data', 'desc'));
+    unsubscribeMemories = onSnapshot(q, (snapshot) => {
+      const memories = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderMemories(memories);
+      atualizarQuotaNote(memories);
+    }, (err) => {
+      showError('Erro ao carregar memórias: ' + err.message);
+    });
+  }
+
+  function contarMemoriasDeHoje(memories){
+    const hoje = new Date();
+    hoje.setHours(0,0,0,0);
+    return memories.filter(m => m.data && m.data.toDate && m.data.toDate() >= hoje).length;
+  }
+
+  function atualizarQuotaNote(memories){
+    if (currentPlano === 'assinante') {
+      quotaNote.textContent = 'Plano assinante — memórias ilimitadas por dia.';
+      saveMemBtn.disabled = false;
+      return;
+    }
+    const usadasHoje = contarMemoriasDeHoje(memories);
+    const restantes = Math.max(0, LIMITE_DIARIO_GRATIS - usadasHoje);
+    quotaNote.textContent = `Plano grátis: ${usadasHoje}/${LIMITE_DIARIO_GRATIS} memórias guardadas hoje.`;
+    saveMemBtn.disabled = restantes <= 0;
+  }
+
+  function formatDate(ts){
+    if (!ts || !ts.toDate) return '';
+    return ts.toDate().toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderMemories(memories){
+    memoryCount.textContent = memories.length === 0
+      ? ''
+      : memories.length + (memories.length === 1 ? ' memória guardada' : ' memórias guardadas');
+
+    if (memories.length === 0) {
+      memoriesList.innerHTML = '<div class="empty-state">Nenhuma memória guardada ainda. Escreva ou grave a primeira acima.</div>';
+      return;
+    }
+
+    memoriesList.innerHTML = memories.map(m => `
+      <div class="memory-card" data-id="${m.id}">
+        <input type="checkbox" class="memory-check" data-id="${m.id}">
+        <div class="memory-body">
+          <div class="memory-title">${escapeHtml(m.titulo || '(sem título)')}</div>
+          <div class="memory-date">${formatDate(m.data)}</div>
+          <div class="memory-text">${escapeHtml(m.texto)}</div>
+        </div>
+        <button class="memory-delete" data-id="${m.id}">remover</button>
+      </div>
+    `).join('');
+
+    memoriesList.querySelectorAll('.memory-delete').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        try {
+          await deleteDoc(doc(db, 'users', currentUid, 'memorias', id));
+        } catch (err) {
+          showError('Erro ao remover: ' + err.message);
+        }
+      });
+    });
+  }
+
+  saveMemBtn.addEventListener('click', async () => {
+    const texto = memTexto.value.trim();
+    if (!texto) {
+      showError('Escreva ou grave alguma coisa no campo de memória antes de salvar.');
+      return;
+    }
+    clearError();
+    if (isRecording) stopRecording();
+
+    saveMemBtn.disabled = true;
+    try {
+      await addDoc(memoriesCollection(), {
+        titulo: memTitulo.value.trim(),
+        texto: texto,
+        data: serverTimestamp()
+      });
+      memTitulo.value = '';
+      memTexto.value = '';
+      baseText = '';
+    } catch (err) {
+      showError('Erro ao salvar memória: ' + err.message);
+    } finally {
+      saveMemBtn.disabled = false;
+    }
+  });
+
+  selectAllBtn.addEventListener('click', () => {
+    const checkboxes = memoriesList.querySelectorAll('.memory-check');
+    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+    checkboxes.forEach(cb => cb.checked = !allChecked);
+  });
+
+  // ---------- Reconhecimento de voz (Web Speech API) ----------
+  const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let recognition = null;
+  let isRecording = false;
+  let baseText = '';
+  let activeTextEl = null;
+  let activeMicEl = null;
+
+  if (SpeechRecognitionAPI) {
+    recognition = new SpeechRecognitionAPI();
+    recognition.lang = 'pt-BR';
+    recognition.continuous = true;
+    recognition.interimResults = true;
+
+    recognition.onresult = (event) => {
+      if (!activeTextEl) return;
+      let interim = '';
+      let final = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const text = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          final += text + ' ';
+        } else {
+          interim += text;
+        }
+      }
+      if (final) baseText += final;
+      activeTextEl.value = (baseText + interim).trim();
+    };
+
+    recognition.onerror = (event) => {
+      showError('Erro no reconhecimento de voz: ' + event.error + '. Verifique a permissão do microfone.');
+      stopRecording();
+    };
+
+    recognition.onend = () => {
+      if (isRecording) recognition.start();
+    };
+  } else {
+    memMicBtn.disabled = true;
+  }
+
+  function startRecording(el, btn){
+    clearError();
+    activeTextEl = el;
+    activeMicEl = btn;
+    baseText = el.value ? el.value.trim() + ' ' : '';
+    isRecording = true;
+    recognition.start();
+    btn.classList.add('recording');
+  }
+  function stopRecording(){
+    isRecording = false;
+    if (recognition) recognition.stop();
+    if (activeMicEl) activeMicEl.classList.remove('recording');
+    activeMicEl = null;
+    activeTextEl = null;
+  }
+
+  memMicBtn.addEventListener('click', () => {
+    if (!recognition) return;
+    if (isRecording && activeTextEl === memTexto) { stopRecording(); return; }
+    if (isRecording) stopRecording();
+    startRecording(memTexto, memMicBtn);
+  });
+
+  // ---------- Transformar memórias selecionadas em história (via Cloud Function) ----------
+  weaveBtn.addEventListener('click', async () => {
+    const selectedIds = Array.from(memoriesList.querySelectorAll('.memory-check:checked')).map(cb => cb.getAttribute('data-id'));
+    if (selectedIds.length === 0) {
+      showError('Marque ao menos uma memória na lista para transformar em história.');
+      return;
+    }
+
+    const cards = Array.from(memoriesList.querySelectorAll('.memory-card'));
+    const selecionadas = cards
+      .filter(c => selectedIds.includes(c.getAttribute('data-id')))
+      .map(c => ({
+        titulo: c.querySelector('.memory-title').textContent,
+        data: c.querySelector('.memory-date').textContent,
+        texto: c.querySelector('.memory-text').textContent
+      }))
+      .reverse();
+
+    clearError();
+    weaveBtn.disabled = true;
+    weaveBtn.innerHTML = 'Tecendo a história<span class="loading-dots"></span>';
+    storyPanel.style.display = 'block';
+    storyOutput.textContent = '';
+
+    try {
+      const resultado = await gerarHistoriaFn({ memorias: selecionadas });
+      storyOutput.textContent = resultado.data.historia || '(sem resposta)';
+    } catch (err) {
+      showError('Não foi possível gerar a história: ' + err.message);
+      storyPanel.style.display = 'none';
+    } finally {
+      weaveBtn.disabled = false;
+      weaveBtn.textContent = 'Transformar selecionadas em história';
+    }
+  });
+
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(storyOutput.textContent);
+    copyBtn.textContent = 'Copiado!';
+    setTimeout(() => copyBtn.textContent = 'Copiar texto', 1500);
+  });
+
+  entrevistaMicBtn.addEventListener('click', () => {
+    if (!recognition) return;
+    if (isRecording && activeTextEl === entrevistaInput) { stopRecording(); return; }
+    if (isRecording) stopRecording();
+    startRecording(entrevistaInput, entrevistaMicBtn);
+  });
+
+  // ---------- Entrevista guiada (exclusiva de assinantes) ----------
+  let entrevistaHistorico = []; // [{ role, texto }]
+  let entrevistaEmAndamento = false;
+
+  function renderEntrevista(){
+    entrevistaChat.innerHTML = entrevistaHistorico.map(m => `
+      <div class="chat-bubble ${m.role === 'assistant' ? 'ai' : 'user'}">${escapeHtml(m.texto)}</div>
+    `).join('');
+    entrevistaChat.scrollTop = entrevistaChat.scrollHeight;
+  }
+
+  async function enviarTurnoEntrevista(textoUsuario){
+    if (isRecording) stopRecording();
+    entrevistaHistorico.push({ role: 'user', texto: textoUsuario });
+    renderEntrevista();
+    entrevistaInput.value = '';
+
+    entrevistaEnviarBtn.disabled = true;
+    entrevistaEnviarBtn.innerHTML = 'Pensando<span class="loading-dots"></span>';
+    clearError();
+
+    try {
+      const resultado = await entrevistarMemoriaFn({ mensagens: entrevistaHistorico });
+      entrevistaHistorico.push({ role: 'assistant', texto: resultado.data.pergunta });
+      renderEntrevista();
+      entrevistaLabel.textContent = 'Sua resposta';
+      entrevistaFinalizarBtn.style.display = 'inline-block';
+    } catch (err) {
+      showError('Não foi possível continuar a entrevista: ' + err.message);
+      entrevistaHistorico.pop(); // remove a mensagem do usuário já que não teve resposta
+      renderEntrevista();
+    } finally {
+      entrevistaEnviarBtn.disabled = false;
+      entrevistaEnviarBtn.textContent = entrevistaEmAndamento ? 'Enviar resposta' : 'Começar entrevista';
+    }
+  }
+
+  entrevistaEnviarBtn.addEventListener('click', () => {
+    const texto = entrevistaInput.value.trim();
+    if (!texto) {
+      showError('Escreva ou grave algo antes de enviar.');
+      return;
+    }
+    entrevistaEmAndamento = true;
+    enviarTurnoEntrevista(texto);
+  });
+
+  entrevistaFinalizarBtn.addEventListener('click', async () => {
+    if (entrevistaHistorico.length === 0) return;
+    clearError();
+    entrevistaFinalizarBtn.disabled = true;
+    try {
+      const transcricao = entrevistaHistorico
+        .map(m => (m.role === 'assistant' ? 'IA perguntou: ' : 'Você respondeu: ') + m.texto)
+        .join('\n\n');
+      const primeiraFala = entrevistaHistorico.find(m => m.role === 'user');
+      await addDoc(memoriesCollection(), {
+        titulo: (primeiraFala ? primeiraFala.texto.slice(0, 60) : 'Entrevista guiada'),
+        texto: transcricao,
+        data: serverTimestamp()
+      });
+      entrevistaHistorico = [];
+      renderEntrevista();
+      entrevistaLabel.textContent = 'Sobre o que você quer falar?';
+      entrevistaFinalizarBtn.style.display = 'none';
+      entrevistaEmAndamento = false;
+      entrevistaEnviarBtn.textContent = 'Começar entrevista';
+    } catch (err) {
+      showError('Erro ao salvar a entrevista como memória: ' + err.message);
+    } finally {
+      entrevistaFinalizarBtn.disabled = false;
+    }
+  });
+
+  // ---------- Exportar em PDF (local, sem servidor — benefício de assinante) ----------
+  exportPdfBtn.addEventListener('click', () => {
+    const cards = Array.from(memoriesList.querySelectorAll('.memory-card'));
+    if (cards.length === 0) {
+      showError('Não há memórias guardadas para exportar ainda.');
+      return;
+    }
+    clearError();
+
+    const { jsPDF } = window.jspdf;
+    const docPdf = new jsPDF({ unit: 'pt', format: 'a4' });
+    const margem = 50;
+    const larguraUtil = docPdf.internal.pageSize.getWidth() - margem * 2;
+    let y = margem;
+
+    docPdf.setFont('times', 'bold');
+    docPdf.setFontSize(20);
+    docPdf.text('Coleção de Memórias', margem, y);
+    y += 30;
+
+    cards.reverse().forEach((card) => {
+      const titulo = card.querySelector('.memory-title').textContent;
+      const data = card.querySelector('.memory-date').textContent;
+      const texto = card.querySelector('.memory-text').textContent;
+
+      if (y > 720) { docPdf.addPage(); y = margem; }
+
+      docPdf.setFont('times', 'bold');
+      docPdf.setFontSize(13);
+      docPdf.text(titulo, margem, y);
+      y += 16;
+
+      docPdf.setFont('courier', 'normal');
+      docPdf.setFontSize(9);
+      docPdf.text(data, margem, y);
+      y += 16;
+
+      docPdf.setFont('times', 'normal');
+      docPdf.setFontSize(11);
+      const linhas = docPdf.splitTextToSize(texto, larguraUtil);
+      linhas.forEach((linha) => {
+        if (y > 760) { docPdf.addPage(); y = margem; }
+        docPdf.text(linha, margem, y);
+        y += 15;
+      });
+      y += 20;
+    });
+
+    const storyText = storyOutput.textContent.trim();
+    if (storyText) {
+      docPdf.addPage();
+      y = margem;
+      docPdf.setFont('times', 'bold');
+      docPdf.setFontSize(16);
+      docPdf.text('História gerada', margem, y);
+      y += 26;
+      docPdf.setFont('times', 'normal');
+      docPdf.setFontSize(11);
+      const linhasHistoria = docPdf.splitTextToSize(storyText, larguraUtil);
+      linhasHistoria.forEach((linha) => {
+        if (y > 760) { docPdf.addPage(); y = margem; }
+        docPdf.text(linha, margem, y);
+        y += 15;
+      });
+    }
+
+    docPdf.save('colecao-de-memorias.pdf');
+  });
+</script>
+
+</body>
+</html>
